@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 
+            'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .main-div{
+            border: 3px solid red;
+            background-color: aqua;
+            width: 100%;
+            height: 100vh;
+        }
+        #heading{
+            margin: 50px auto;
+            margin-left: 200px;
+            color: blue;
+        }
+     .inner-div{
+         border-radius: 12px;
+         display: flex;
+         background-color: white;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         margin: 200px  auto;
+         width: 400px;
+         padding: 12px 12px;
+         box-shadow: 0 1rem 1rem -0.7rem  rgba(0,0,0,0.7);
+     }  
+     .inner-div li{
+         list-style: none;
+     }
+     input{
+         cursor: pointer;
+     }     
+     #submit, .btn{
+         background-color:  red;
+         color: white;
+         padding: 2px 6px;
+     } 
+     #submit:hover{
+         background-color:  white;
+         color: black;
+         cursor: pointer;
+     }
+     #showScore{
+         background-color: rgb(174, 151, 151);
+         margin: 12px ;
+         width: 300px;
+         height: 70px;
+         
+     }
+     .scoreArea{
+         display: none;
+     }
+
+    </style>
+</head>
+<body>
+    <div class="main-div">
+        <h1 id="heading">Hey!! Ready for IAS preparation?? Let's check your knowledge skills.</h1>
+        <div class="inner-div">
+           <h2 class="question">Question here.</h2>
+            <ul>
+                <li>
+                    <input type="radio" name="question" id="ans1" class="answer">
+                    <label for="ans1" id="option1">Answer here.</label>
+                </li>
+                <li>
+                    <input type="radio" name="question" id="ans2" class="answer">
+                    <label for="ans2" id="option2">Answer here.</label>
+                </li>
+                <li>
+                    <input type="radio" name="question" id="ans3" class="answer">
+                    <label for="ans3" id="option3">Answer here.</label>
+                </li>
+                <li>
+                    <input type="radio" name="question" id="ans4" class="answer">
+                    <label for="ans4" id="option4">Answer here.</label>
+                </li>
+            </ul>
+            <button id="submit">Submit</button>
+            <div id="showScore" class="scoreArea"> </div>
+        </div>
+    </div>
+    <script>
+    
+    const quizDB = [
+        {
+           question: "Q1: What is the Full form of UPSC?",
+           a: "Union private service commerce",
+           b: "Union public selective commission",
+           c: "Union public service commission",
+           d: "Union private service commission",
+           ans: "ans3"
+        },
+        {
+            question: "Q2: National Income estimates in India are prepared by?",
+           a: "Planning Commission",
+           b: "Reserve Bank of India",
+           c: "Indian statistical Institute",
+           d: "Central statistical organisation",
+           ans: "ans4"
+        },
+        {
+            question: "Q3:The tropic of cancer does not pass through which of these Indian states ?",
+           a: " Madhya Pradesh",
+           b: "West Bengal",
+           c: "Rajasthan",
+           d: "Odisha",
+           ans: "ans4"
+        },
+        {
+            question: "Q4:when was the constitution of india adopted ?",
+           a: " 26 Jan 1950",
+           b: "24 Jan 1950",
+           c: "12 Aug 1949",
+           d: "26 Nov 1949",
+           ans: "ans4"
+        },
+        {
+            question: "Q5:When was the National Commission for Women was set up as statutory body in India ?",
+           a: "1978",
+           b: "1985",
+           c: "1992",
+           d: "2001",
+           ans: "ans3"
+        },
+        {
+            question: "Q6:What is the limit of FDI permitted in the Road and Highways Sector in India?",
+           a: " 21%",
+           b: "49%",
+           c: "75%",
+           d: "100%",
+           ans: "ans4"
+        },
+        {
+            question: "Q7:For the crop year 2021-22, what is the food grain production target fixed by the Government of India?",
+           a: " 201.31 million tonnes",
+           b: "307.31 million tonnes",
+           c: "405.71 million tonnes",
+           d: "500 million tonnes",
+           ans: "ans2"
+        },
+        {
+            question: "Q8:As per the new MSME rules, what documents are required for registration of MSMEs?",
+           a: "  GSTIN, PAN and Aadhar",
+           b: "PAN and Aadhar",
+           c: "Udyog Aadhar",
+           d: " Biometric Identification",
+           ans: "ans2"
+        },
+        {
+            question: "Q9:What is the name of the informational video series released in the Health Ministry’s social media platforms?",
+           a: " COVID Warrior",
+           b: " COVID GuruKool",
+           c: "COVID DRONA",
+           d: "COVID ASTRA",
+           ans: "ans2"
+        },
+        {
+            question: "Q10: Who is the author of the book 'Freedom Behind Bars '",
+           a: "Kiran Bedi",
+           b: "Jawaharlal Nehru",
+           c: " Nelson Mandela",
+           d: "Sheikh Abdullah",
+           ans: "ans1"
+        }
+    ];
+     const question = document.querySelector('.question');
+     const option1 = document.querySelector('#option1');
+     const option2 = document.querySelector('#option2');
+     const option3 = document.querySelector('#option3');
+     const option4 = document.querySelector('#option4');
+     const submit = document.querySelector('#submit');
+     const answers = document.querySelectorAll('.answer');
+     const showScore = document.querySelector('#showScore');
+     let questionCount = 0;
+     let score=0;
+     const loadQuestion= () => {
+         const questionList = quizDB[questionCount];
+         question.innerHTML= questionList.question;
+         option1.innerText = questionList.a;
+         option2.innerText = questionList.b;
+         option3.innerText = questionList.c;
+         option4.innerText = questionList.d;
+     }
+     
+     loadQuestion();
+     const getCheckAnswer= () =>{
+          let answer;
+          answers.forEach((curAnsElem) => {
+              if(curAnsElem.checked){
+                  answer =  curAnsElem.id;
+              }
+          });
+          return answer;
+
+     }
+      submit.addEventListener('click', () => {
+          const checkedAnswer = getCheckAnswer();
+          if(checkedAnswer === quizDB[questionCount].ans){
+              score++;
+          };
+          questionCount++;
+          if(questionCount<quizDB.length){
+              loadQuestion();
+          }
+          else{
+              showScore.innerHTML=`
+              <h3> You scored ${score}/${quizDB.length} ✌ ✌  </h3>  
+              <button class="btn" onclick="location.reload()">Play Again
+                </button> 
+              `;
+              showScore.classList.remove('scoreArea');
+          }
+      });
+
+
+
+
+
+    </script>
+</body>
+</html>
